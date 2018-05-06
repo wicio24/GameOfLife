@@ -3,11 +3,11 @@ package Model;
 import javafx.concurrent.Task;
 import Controller.Controller;
 
-public class DrawerTask extends Task
+public class DrawerTask implements Runnable
 {
 
     private Controller controller;
-    private boolean stopFlag;
+    private boolean stopFlag = false;
 
 
     public DrawerTask(Controller controller)
@@ -16,21 +16,32 @@ public class DrawerTask extends Task
     }
 
     @Override
-    protected Object call() throws InterruptedException
+    public void run()
     {
 
         while (!stopFlag)
         {
 
             controller.drawCanvas();
-            Thread.sleep(500);
+            try
+            {
+                Thread.sleep(500);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
         }
-        return 1;
+
     }
 
 
     public void setStopFlag(boolean stopFlag)
     {
         this.stopFlag = stopFlag;
+    }
+
+    public boolean isStopFlag()
+    {
+        return stopFlag;
     }
 }

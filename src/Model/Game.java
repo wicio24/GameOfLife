@@ -17,6 +17,8 @@ public class Game
         tab2 = new int[tabSizeHeight][tabSizeWidth];
     }
 
+
+
     public int[][] getTab1()
     {
         return tab1;
@@ -69,5 +71,23 @@ public class Game
 
             }
         }
+    }
+
+    public void clearGrid()
+    {
+        for (int i = 0; i < tabSizeHeight; i++)
+        {
+            for (int j = 0; j < tabSizeWidth; j++)
+            {
+                tab1[i][j] = 0;
+                tab2[i][j] = 0;
+            }
+        }
+
+    }
+    public void setTab1Cell(int x, int y)
+    {
+        if(tab1[y][x] == 1) tab1[y][x] = 0;
+        else tab1[y][x] = 1;
     }
 }

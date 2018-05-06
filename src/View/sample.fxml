@@ -8,11 +8,12 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="624.0" prefWidth="859.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Controller">
     <children>
-        <Canvas fx:id="drawCanvas" height="600.0" layoutX="14.0" layoutY="14.0" width="700.0" />
-        <Button fx:id="nextStepButtom" layoutX="726.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleNextStep" prefHeight="26.0" prefWidth="116.0" text="Start loop" />
-      <Button fx:id="startButtom" layoutX="726.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleStart" prefHeight="26.0" prefWidth="116.0" text="Start / Reset" />
+        <Canvas fx:id="canvas" height="600.0" layoutX="14.0" layoutY="14.0" onMouseClicked="#handleMouseClick" onMouseDragged="#handleMouseClick" width="700.0" />
+        <Button fx:id="startLoopButton" disable="true" layoutX="726.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStartLoop" prefHeight="26.0" prefWidth="116.0" text="Start loop" />
+      <Button fx:id="startButton" layoutX="726.0" layoutY="76.0" mnemonicParsing="false" onAction="#handleStart" prefHeight="26.0" prefWidth="116.0" text="Start / Reset" />
       <TextField fx:id="textField" layoutX="726.0" layoutY="40.0" prefHeight="26.0" prefWidth="116.0" promptText="20000" text="20000" />
       <Label layoutX="726.0" layoutY="14.0" prefHeight="26.0" prefWidth="116.0" text="Starting points" />
-      <Button fx:id="stopLoopButtom" layoutX="726.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleStopLoop" prefHeight="26.0" prefWidth="116.0" text="Stop loop" />
+      <Button fx:id="stopLoopButton" disable="true" layoutX="726.0" layoutY="235.0" mnemonicParsing="false" onAction="#handleStopLoop" prefHeight="26.0" prefWidth="116.0" text="Stop loop" />
+      <Button fx:id="nextStepButton" disable="true" layoutX="726.0" layoutY="314.0" mnemonicParsing="false" onAction="#handleNextStep" prefHeight="26.0" prefWidth="116.0" text="Next step" />
     </children>
 </AnchorPane>

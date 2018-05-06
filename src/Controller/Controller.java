@@ -3,13 +3,14 @@ package Controller;
 import Model.DrawerTask;
 import Model.Game;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-
 import java.util.Random;
 
 public class Controller
@@ -27,16 +28,19 @@ public class Controller
 
 
     @FXML
-    private Canvas drawCanvas;
+    private Canvas canvas;
 
     @FXML
-    private Button startButtom;
+    private Button startButton;
 
     @FXML
-    private Button nextStepButtom;
+    private Button startLoopButton;
 
     @FXML
-    private Button stopLoopButtom;
+    private Button stopLoopButton;
+
+    @FXML
+    private Button nextStepButton;
 
     @FXML
     private TextField textField;
@@ -46,12 +50,33 @@ public class Controller
     private void initialize()
     {
 
-        gc = drawCanvas.getGraphicsContext2D();
+        gc = canvas.getGraphicsContext2D();
 
         tabSizeWidth = (int) gc.getCanvas().getWidth() / pixelSize;
         tabSizeHeight = (int) gc.getCanvas().getHeight() / pixelSize;
         startingPoints = Integer.parseInt(this.textField.getText());
-        game = new Game(tabSizeWidth, tabSizeWidth);
+        game = new Game(tabSizeWidth, tabSizeHeight);
+    }
+
+
+    @FXML
+    private void handleMouseClick(MouseEvent mouseEvent)
+    {
+        int x = (int)mouseEvent.getX();
+        int y = (int)mouseEvent.getY();
+
+        if(game.getTab1()[y/pixelSize][x/pixelSize] == 1)
+        {
+            gc.setFill(Color.BLACK);
+            gc.fillRect(x, y, pixelSize, pixelSize);
+            game.setTab1Cell(x/pixelSize,y/pixelSize);
+        }
+        else
+        {
+            gc.setFill(Color.WHITE);
+            gc.fillRect(x, y, pixelSize, pixelSize);
+            game.setTab1Cell(x/pixelSize,y/pixelSize);
+        }
 
     }
 
@@ -59,32 +84,40 @@ public class Controller
     @FXML
     private void handleStart()
     {
+        startLoopButton.setDisable(false);
+        nextStepButton.setDisable(false);
 
         randomNewPoints();
+
     }
 
-
     @FXML
-    private void handleNextStep()
+    private void handleStartLoop()
     {
+        stopLoopButton.setDisable(false);
+        startLoopButton.setDisable(true);
 
         task = new DrawerTask(this);
         task.setStopFlag(false);
         Thread thread = new Thread(task);
         thread.setDaemon(true);
         thread.start();
-        //drawCanvas();
-
-
     }
-
 
     @FXML
     private void handleStopLoop()
     {
+        stopLoopButton.setDisable(true);
+        startLoopButton.setDisable(false);
+
         task.setStopFlag(true);
     }
 
+    @FXML
+    private void handleNextStep()
+    {
+        drawCanvas();
+    }
 
     public void randomNewPoints()
     {
@@ -103,15 +136,7 @@ public class Controller
 
     public void clearCanvas()
     {
-        for (int i = 0; i < tabSizeHeight; i++)
-        {
-            for (int j = 0; j < tabSizeWidth; j++)
-            {
-                game.getTab1()[i][j] = 0;
-                game.getTab2()[i][j] = 0;
-            }
-        }
-
+        game.clearGrid();
         gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight()); // wyczysc plansze
     }
 
@@ -120,6 +145,7 @@ public class Controller
 
 
         Platform.runLater(() -> {
+            game.rules();
             for (int i = 0; i < tabSizeHeight; i++)
             {
                 for (int j = 0; j < tabSizeWidth; j++)
@@ -136,9 +162,10 @@ public class Controller
 
                 }
             }
+
         });
 
-        game.rules();
+
 
 
 
